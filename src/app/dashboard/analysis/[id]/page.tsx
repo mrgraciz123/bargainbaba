@@ -195,7 +195,7 @@ export default function AnalysisDetails() {
               Squeeze Strategy for {project?.city || 'Delhi'} Wedding
             </h1>
             <div className="flex flex-wrap items-center gap-4 text-xs text-gray-400">
-              <span className="flex items-center gap-1"><Users className="w-3.5 h-3.5 text-wedding-gold" /> {project?.guest_count || 300} Guests</span>
+              <span className="flex items-center gap-1"><Users className="w-3.5 h-3.5 text-wedding-gold" /> {project?.guests || 300} Guests</span>
               <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-wedding-gold" /> {project?.city}</span>
               <span className="flex items-center gap-1"><Wallet className="w-3.5 h-3.5 text-wedding-gold" /> Total: ₹{project?.budget?.toLocaleString('en-IN')}</span>
             </div>
