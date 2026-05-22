@@ -3,31 +3,162 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+  --crimson-deep: #4A0E17;
+  --crimson-medium: #8B1E3F;
+  --crimson-light: #A31D1D;
+  --gold-metallic: #AA7C11;
+  --gold-bright: #D4AF37;
+  --gold-soft: #F3E5AB;
+  --ivory-base: #FCFBF7;
+  --ivory-warm: #F5F2EB;
+  
+  --foreground-rgb: 252, 251, 247;
+  --background-start-rgb: 20, 4, 7;
+  --background-end-rgb: 40, 8, 14;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: radial-gradient(circle at 50% 50%, #2D050B 0%, #110204 100%);
+  min-height: 100vh;
+  font-family: var(--font-outfit), system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+/* Custom Glassmorphism Card Style */
+.glass-card {
+  background: rgba(45, 8, 14, 0.45);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+.glass-card-hover {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-4px);
+  border-color: rgba(212, 175, 55, 0.4);
+  box-shadow: 0 12px 40px 0 rgba(139, 30, 63, 0.3), 
+              0 0 15px rgba(212, 175, 55, 0.15);
+}
+
+/* Gold Text Gradient */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #FFF9E6 0%, #F3E5AB 30%, #D4AF37 70%, #AA7C11 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(212, 175, 55, 0.15);
+}
+
+/* Crimson Red Gradient Text */
+.text-crimson-gradient {
+  background: linear-gradient(135deg, #FF6B6B 0%, #A31D1D 50%, #4A0E17 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Custom Glow Elements */
+.glow-gold {
+  box-shadow: 0 0 40px rgba(212, 175, 55, 0.2);
+}
+
+.glow-crimson {
+  box-shadow: 0 0 40px rgba(139, 30, 63, 0.45);
+}
+
+.glow-text-gold {
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.5), 0 0 20px rgba(212, 175, 55, 0.2);
+}
+
+/* Floating Animation */
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(3deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.float-slow {
+  animation: float 6s ease-in-out infinite;
+}
+
+.float-medium {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Glowing AI pulse */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
   }
 }
+
+.pulse-ai-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* Scrollbar customizations */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #110204;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4A0E17;
+  border-radius: 4px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8B1E3F;
+}
+
+/* Custom grid decorations */
+.grid-bg {
+  background-image: 
+    radial-gradient(rgba(212, 175, 55, 0.08) 1.5px, transparent 1.5px),
+    radial-gradient(rgba(139, 30, 63, 0.08) 1.5px, transparent 1.5px);
+  background-size: 40px 40px;
+  background-position: 0 0, 20px 20px;
+}
+
+/* Marigold falling effect */
+@keyframes fall {
+  0% {
+    transform: translateY(-20px) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(105vh) translateX(100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.marigold-petal {
+  position: absolute;
+  top: -20px;
+  pointer-events: none;
+  animation: fall 12s linear infinite;
+  background: linear-gradient(135deg, #FFB800 0%, #FF8A00 100%);
+  border-radius: 50% 0 50% 50%;
+  box-shadow: 0 4px 10px rgba(255, 138, 0, 0.3);
+}
+
