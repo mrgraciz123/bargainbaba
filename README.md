@@ -284,7 +284,7 @@ J --> K[Email Delivery]
 
 ## 👨‍💻 Team
 
-### Bit Bandits
+### Tech Lababdar
 
 Built with passion to transform wedding planning through AI, procurement intelligence, and data-driven decision making.
 
