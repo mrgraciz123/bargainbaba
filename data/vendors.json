@@ -1,0 +1,190 @@
+[
+  {
+    "category": "Photography",
+    "city": "Lucknow",
+    "avg_price": 70000,
+    "budget_price": 40000,
+    "premium_price": 120000,
+    "vendors": [
+      {
+        "name": "Golden Lens Studio",
+        "rating": 4.6,
+        "price_range": "₹60k - ₹90k"
+      },
+      {
+        "name": "Awadh Cinema",
+        "rating": 4.8,
+        "price_range": "₹80k - ₹1.5L"
+      }
+    ]
+  },
+  {
+    "category": "Photography",
+    "city": "Delhi NCR",
+    "avg_price": 120000,
+    "budget_price": 70000,
+    "premium_price": 250000,
+    "vendors": [
+      {
+        "name": "Capital Captures",
+        "rating": 4.7,
+        "price_range": "₹1L - ₹2L"
+      },
+      {
+        "name": "Delhi Wed Films",
+        "rating": 4.9,
+        "price_range": "₹1.5L - ₹3L"
+      }
+    ]
+  },
+  {
+    "category": "Catering",
+    "city": "Lucknow",
+    "avg_price": 1200,
+    "budget_price": 800,
+    "premium_price": 2500,
+    "vendors": [
+      {
+        "name": "Royal Awadhi Feasts",
+        "rating": 4.8,
+        "price_range": "₹1.5k - ₹2.5k per plate"
+      },
+      {
+        "name": "Nawab Caterers",
+        "rating": 4.5,
+        "price_range": "₹1k - ₹1.8k per plate"
+      }
+    ]
+  },
+  {
+    "category": "Catering",
+    "city": "Delhi NCR",
+    "avg_price": 2000,
+    "budget_price": 1200,
+    "premium_price": 4500,
+    "vendors": [
+      {
+        "name": "Punjabi Grand Kitchen",
+        "rating": 4.7,
+        "price_range": "₹2k - ₹4k per plate"
+      },
+      {
+        "name": "Farmhouse Delights",
+        "rating": 4.6,
+        "price_range": "₹1.5k - ₹3k per plate"
+      }
+    ]
+  },
+  {
+    "category": "Decoration",
+    "city": "Lucknow",
+    "avg_price": 150000,
+    "budget_price": 80000,
+    "premium_price": 350000,
+    "vendors": [
+      {
+        "name": "Gomti Floral Arts",
+        "rating": 4.5,
+        "price_range": "₹1L - ₹2.5L"
+      }
+    ]
+  },
+  {
+    "category": "Decoration",
+    "city": "Delhi NCR",
+    "avg_price": 300000,
+    "budget_price": 150000,
+    "premium_price": 800000,
+    "vendors": [
+      {
+        "name": "Chhatarpur Events",
+        "rating": 4.8,
+        "price_range": "₹3L - ₹6L"
+      }
+    ]
+  },
+  {
+    "category": "Venues",
+    "city": "Lucknow",
+    "avg_price": 250000,
+    "budget_price": 100000,
+    "premium_price": 600000,
+    "vendors": [
+      {
+        "name": "Heritage Palace Resort",
+        "rating": 4.6,
+        "price_range": "₹2L - ₹5L"
+      }
+    ]
+  },
+  {
+    "category": "Venues",
+    "city": "Delhi NCR",
+    "avg_price": 500000,
+    "budget_price": 200000,
+    "premium_price": 1500000,
+    "vendors": [
+      {
+        "name": "Royal Farmhouse Farms",
+        "rating": 4.7,
+        "price_range": "₹4L - ₹10L"
+      }
+    ]
+  },
+  {
+    "category": "Makeup Artists",
+    "city": "Lucknow",
+    "avg_price": 25000,
+    "budget_price": 15000,
+    "premium_price": 50000,
+    "vendors": [
+      {
+        "name": "Glamour by Priya",
+        "rating": 4.7,
+        "price_range": "₹20k - ₹40k"
+      }
+    ]
+  },
+  {
+    "category": "Makeup Artists",
+    "city": "Delhi NCR",
+    "avg_price": 40000,
+    "budget_price": 20000,
+    "premium_price": 80000,
+    "vendors": [
+      {
+        "name": "South Delhi Glam",
+        "rating": 4.9,
+        "price_range": "₹35k - ₹70k"
+      }
+    ]
+  },
+  {
+    "category": "DJs",
+    "city": "Lucknow",
+    "avg_price": 30000,
+    "budget_price": 15000,
+    "premium_price": 60000,
+    "vendors": [
+      {
+        "name": "DJ Awadh Beats",
+        "rating": 4.5,
+        "price_range": "₹25k - ₹45k"
+      }
+    ]
+  },
+  {
+    "category": "DJs",
+    "city": "Delhi NCR",
+    "avg_price": 60000,
+    "budget_price": 35000,
+    "premium_price": 150000,
+    "vendors": [
+      {
+        "name": "Punjabi Dhol & DJ",
+        "rating": 4.8,
+        "price_range": "₹50k - ₹1L"
+      }
+    ]
+  }
+]

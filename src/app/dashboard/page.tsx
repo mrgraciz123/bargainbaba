@@ -4,11 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Sparkles, 
-  Plus, 
-  FileText, 
-  MessageSquare, 
+import {
+  Sparkles,
+  Plus,
+  FileText,
   Activity,
   AlertTriangle,
   TrendingDown,
@@ -18,40 +17,59 @@ import {
   Wallet,
   LogOut,
   ArrowRight,
-  TrendingUp,
-  Flame,
-  BadgeAlert,
+  Brain,
+  ShieldCheck,
+  ShieldAlert,
   Trash2,
   Edit2,
-  X
+  X,
+  Target,
+  BadgeCheck,
+  BarChart3,
+  Zap,
+  MessageSquare,
 } from 'lucide-react';
 import { supabase, isUsingMock, WeddingProject } from '@/lib/supabase';
 import MarigoldPetals from '@/components/MarigoldPetals';
 
 const cities = [
-  'Delhi NCR', 'Lucknow', 'Mumbai', 'Bengaluru', 'Jaipur', 'Udaipur', 'Kolkata', 'Ahmedabad', 'Patna', 'Dehradun', 'Goa'
+  'Delhi NCR', 'Lucknow', 'Mumbai', 'Bengaluru', 'Jaipur', 'Udaipur',
+  'Kolkata', 'Ahmedabad', 'Patna', 'Dehradun', 'Goa', 'Hyderabad', 'Chennai', 'Pune'
 ];
-
 const weddingTypes = [
-  'Grand Royal Palace Wedding', 'Modern Minimalist Glass Wedding', 'Big Fat Punjabi Dhol Wedding', 'Traditional South Indian Feast', 'Royal Marwari Heritage Wedding'
+  'Grand Royal Palace Wedding', 'Modern Minimalist Glass Wedding', 'Big Fat Punjabi Dhol Wedding',
+  'Traditional South Indian Feast', 'Royal Marwari Heritage Wedding',
 ];
-
 const venueTypes = [
-  'Premium AC Lawn / Farmhouse', '5-Star Luxury Hotel Hall', 'Heritage Palace Resort', 'Standard Banquet Hall', 'Local Community Center'
+  'Premium AC Lawn / Farmhouse', '5-Star Luxury Hotel Hall', 'Heritage Palace Resort',
+  'Standard Banquet Hall', 'Local Community Center',
 ];
-
 const cateringPrefs = [
-  'Premium Royal Multi-Cuisine Buffet', '5-Star Plated Service', 'Traditional Pure Veg Sit-Down Feast', 'Standard Unlimited Buffet', 'Basic Traditional Spread'
+  'Premium Royal Multi-Cuisine Buffet', '5-Star Plated Service', 'Traditional Pure Veg Sit-Down Feast',
+  'Standard Unlimited Buffet', 'Basic Traditional Spread',
 ];
 
 const updatingTexts = [
-  "Auditing standard caterer plate-marker scams...",
-  "Comparing paneer cube volumes against Indian Standard Code...",
-  "Baba is renegotiating flower cart prices...",
-  "Estimating Phupha Ji valet outrage risk factor...",
-  "Applying maternal uncle shagun bribes calculations...",
-  "Finalizing new financial squeeze ratios..."
+  'Re-scanning vendor market data...',
+  'Comparing updated price signals...',
+  'Rebuilding procurement strategy...',
+  'Recalculating negotiation leverage...',
+  'Generating updated savings plan...',
 ];
+
+function RiskBadge({ level }: { level: string }) {
+  const cfg = {
+    Low: { color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/25' },
+    Medium: { color: 'text-amber-400', bg: 'bg-amber-500/10 border-amber-500/25' },
+    High: { color: 'text-rose-400', bg: 'bg-rose-500/10 border-rose-500/25' },
+  };
+  const c = cfg[level as keyof typeof cfg] || cfg.Medium;
+  return (
+    <span className={`text-[9px] font-bold uppercase tracking-wider border px-2 py-0.5 rounded-full ${c.color} ${c.bg}`}>
+      {level} Risk
+    </span>
+  );
+}
 
 export default function Dashboard() {
   const router = useRouter();
@@ -59,7 +77,6 @@ export default function Dashboard() {
   const [user, setUser] = useState<any>(null);
   const [projects, setProjects] = useState<WeddingProject[]>([]);
 
-  // Update modal state
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<WeddingProject | null>(null);
   const [editBudget, setEditBudget] = useState('');
@@ -71,44 +88,31 @@ export default function Dashboard() {
   const [updating, setUpdating] = useState(false);
   const [updatingTextIndex, setUpdatingTextIndex] = useState(0);
 
-  // 1. Fetch user projects on load
   useEffect(() => {
     async function loadData() {
       const sessionRes: any = await supabase.auth.getSession();
       const session = sessionRes?.data?.session;
-      if (!session) {
-        router.push('/auth');
-        return;
-      }
+      if (!session) { router.push('/auth'); return; }
       setUser(session.user);
-
       try {
-        const { data: userProjects, error: projErr } = await supabase
-          .from('wedding_projects')
-          .select('*')
-          .eq('user_id', session.user.id)
+        const { data: userProjects, error } = await supabase
+          .from('wedding_projects').select('*').eq('user_id', session.user.id)
           .order('created_at', { ascending: false });
-        
-        if (projErr) throw projErr;
+        if (error) throw error;
         setProjects(userProjects || []);
-
       } catch (err) {
-        console.error('Error loading dashboard data:', err);
+        console.error('Dashboard load error:', err);
       } finally {
         setLoading(false);
       }
     }
-
     loadData();
   }, [router]);
 
-  // 2. Rotate updating texts
   useEffect(() => {
     let interval: any;
     if (updating) {
-      interval = setInterval(() => {
-        setUpdatingTextIndex((prev) => (prev + 1) % updatingTexts.length);
-      }, 1300);
+      interval = setInterval(() => setUpdatingTextIndex(p => (p + 1) % updatingTexts.length), 1400);
     }
     return () => clearInterval(interval);
   }, [updating]);
@@ -118,29 +122,18 @@ export default function Dashboard() {
     router.push('/');
   };
 
-  // 3. Delete Project functionality
-  const handleDeleteProject = async (id: string) => {
-    const confirmDelete = window.confirm("Are you sure you want to permanently delete this wedding negotiation plan? All saved strategies will be lost!");
-    if (!confirmDelete) return;
-
+  const handleDelete = async (id: string) => {
+    if (!window.confirm('Delete this procurement analysis permanently?')) return;
     try {
-      const { error } = await supabase
-        .from('wedding_projects')
-        .delete()
-        .eq('id', id);
-
+      const { error } = await supabase.from('wedding_projects').delete().eq('id', id);
       if (error) throw error;
-
       setProjects(projects.filter(p => p.id !== id));
-      alert("Wedding plan deleted successfully! 🗑️");
     } catch (err: any) {
-      console.error("Delete error:", err);
-      alert("Failed to delete the report. Please try again.");
+      alert('Delete failed: ' + err.message);
     }
   };
 
-  // 4. Open update modal pre-filled
-  const handleOpenUpdateModal = (project: WeddingProject) => {
+  const handleOpenEdit = (project: WeddingProject) => {
     setEditingProject(project);
     setEditBudget(project.budget.toString());
     setEditGuests(project.guests.toString());
@@ -151,78 +144,58 @@ export default function Dashboard() {
     setIsUpdateModalOpen(true);
   };
 
-  // 5. Submit update form to API & Supabase
-  const handleUpdateProject = async (e: React.FormEvent) => {
+  const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingProject) return;
-
     setUpdating(true);
     setUpdatingTextIndex(0);
-
     try {
       const payload = {
         budget: Number(editBudget),
         guestCount: Number(editGuests),
         city: editCity,
         weddingType: editWeddingType,
-        venueType: editVenueType,
-        decorStyle: editingProject.ai_analysis?.metadata?.decor_style || 'Traditional Marigold (Genda) & Warm LED',
-        cateringPref: editCatering,
-        photographyBudget: editingProject.ai_analysis?.metadata?.photography_budget || 150000
+        requiredServices: editingProject.ai_analysis?.metadata?.services || ['venues', 'photographers', 'caterers'],
+        priorities: editingProject.ai_analysis?.metadata?.priorities || [],
       };
 
-      // Call Next.js API to run OpenRouter analysis on updated parameters
       const response = await fetch('/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
-
-      if (!response.ok) throw new Error('API server returned error');
+      if (!response.ok) throw new Error('Re-analysis API error');
       const apiResult = await response.json();
 
-      const enrichedAnalysis = {
+      const enriched = {
         ...apiResult,
-        metadata: {
-          decor_style: payload.decorStyle,
-          photography_budget: payload.photographyBudget
-        }
+        metadata: { ...editingProject.ai_analysis?.metadata, ...payload },
       };
 
-      // Update in Supabase
-      const { error } = await supabase
-        .from('wedding_projects')
-        .update({
-          budget: Number(editBudget),
-          guests: Number(editGuests),
-          city: editCity,
-          wedding_type: editWeddingType,
-          venue_type: editVenueType,
-          catering: editCatering,
-          ai_analysis: enrichedAnalysis
-        })
-        .eq('id', editingProject.id);
+      const { error } = await supabase.from('wedding_projects').update({
+        budget: Number(editBudget), guests: Number(editGuests),
+        city: editCity, wedding_type: editWeddingType,
+        venue_type: editVenueType, catering: editCatering,
+        ai_analysis: enriched,
+      }).eq('id', editingProject.id);
+      if (error) {
+        console.error('Supabase Update Error:', {
+          table: 'wedding_projects',
+          failedFields: Object.keys(error),
+          errorDetails: error.message || error,
+          hint: error.hint || 'Check for missing columns like catering or venue_type.'
+        });
+        throw new Error('Database schema mismatch detected. Please run the provided SQL migration.');
+      }
 
-      if (error) throw error;
-
-      // Update local state
-      setProjects(projects.map(p => p.id === editingProject.id ? {
-        ...p,
-        budget: Number(editBudget),
-        guests: Number(editGuests),
-        city: editCity,
-        wedding_type: editWeddingType,
-        venue_type: editVenueType,
-        catering: editCatering,
-        ai_analysis: enrichedAnalysis
-      } : p));
-
+      setProjects(projects.map(p => p.id === editingProject.id
+        ? { ...p, budget: Number(editBudget), guests: Number(editGuests), city: editCity, wedding_type: editWeddingType, venue_type: editVenueType, catering: editCatering, ai_analysis: enriched }
+        : p
+      ));
       setIsUpdateModalOpen(false);
       setEditingProject(null);
-      alert("Wedding plan and AI audit successfully updated! 🎉");
     } catch (err: any) {
-      console.error("Update error:", err);
-      alert("Failed to update and regenerate wedding analysis. Please check your network or API keys.");
+      alert('Update failed: ' + err.message);
     } finally {
       setUpdating(false);
     }
@@ -231,452 +204,399 @@ export default function Dashboard() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#110204] flex items-center justify-center flex-col gap-4">
-        <div className="w-12 h-12 border-4 border-wedding-gold border-t-transparent rounded-full animate-spin glow-gold" />
-        <p className="font-cinzel text-sm text-wedding-gold-light uppercase tracking-widest animate-pulse">Loading strategy room...</p>
+        <div className="w-12 h-12 border-4 border-wedding-gold border-t-transparent rounded-full animate-spin shadow-[0_0_20px_rgba(212,175,55,0.3)]" />
+        <p className="font-cinzel text-sm text-wedding-gold-light uppercase tracking-widest animate-pulse">Loading Intelligence Platform...</p>
       </div>
     );
   }
 
-  // Calculate statistics across all wedding projects
-  const totalBudget = projects.reduce((acc, p) => acc + p.budget, 0);
-  const totalSavings = projects.reduce((acc, p) => {
-    const savings = p.ai_analysis?.savingsSuggestions?.reduce((sum: number, s: any) => sum + s.amount, 0) || 0;
-    return acc + savings;
-  }, 0);
-  const avgRisk = projects.length > 0 
-    ? Math.round(projects.reduce((acc, p) => acc + (p.ai_analysis?.riskScore || 0), 0) / projects.length) 
+  // Aggregate stats across all projects
+  const totalBudget = projects.reduce((a, p) => a + p.budget, 0);
+  const totalSavings = projects.reduce((a, p) => a + (p.ai_analysis?.procurementSummary?.estimatedSavingsOpportunity || p.ai_analysis?.savingsSuggestions?.reduce((s: number, x: any) => s + x.amount, 0) || 0), 0);
+  const totalVendors = projects.reduce((a, p) => a + (p.ai_analysis?.procurementSummary?.totalVendorsAnalyzed || p.ai_analysis?.recommendedVendors?.length || 0), 0);
+  const avgScore = projects.length > 0
+    ? Math.round(projects.reduce((a, p) => a + (p.ai_analysis?.procurementSummary?.procurementScore || 75), 0) / projects.length)
     : 0;
 
   return (
     <div className="min-h-screen bg-[#110204] text-white pb-20 relative">
       <MarigoldPetals />
 
-      {/* Header bar */}
+      {/* Header */}
       <header className="sticky top-0 z-40 border-b border-wedding-gold/15 bg-wedding-burgundy/80 backdrop-blur-md px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link href="/" className="font-cinzel text-xl font-black text-gold-gradient tracking-widest">
-            BARGAIN<span className="text-[#FF8A00]">BABA</span> <span className="font-sans text-xs bg-wedding-crimson/50 text-wedding-gold px-2 py-0.5 rounded-full border border-wedding-gold/20">AI</span>
+            BARGAIN<span className="text-[#FF8A00]">BABA</span>{' '}
+            <span className="font-sans text-xs bg-wedding-crimson/50 text-wedding-gold px-2 py-0.5 rounded-full border border-wedding-gold/20">AI</span>
           </Link>
-
           <div className="flex items-center gap-4">
-            <span className="text-xs md:text-sm text-wedding-gold-light font-medium bg-wedding-crimson/10 border border-wedding-gold/10 px-3 py-1 rounded-full">
-              Host: {user?.email?.split('@')[0]} 🤵
+            <span className="text-xs text-wedding-gold-light font-medium bg-wedding-crimson/10 border border-wedding-gold/10 px-3 py-1.5 rounded-full hidden sm:block">
+              {user?.email?.split('@')[0]} 🤵
             </span>
-            <button
-              onClick={handleSignOut}
-              className="text-xs text-gray-400 hover:text-white flex items-center gap-1 transition-colors"
-            >
+            <button onClick={handleSignOut} className="text-xs text-gray-400 hover:text-white flex items-center gap-1.5 transition-colors">
               <LogOut className="w-3.5 h-3.5" /> Sign Out
             </button>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 pt-10 relative z-10 space-y-10">
-        
-        {/* Banner with indicators */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-gradient-to-r from-wedding-crimson-dark/40 to-transparent p-8 rounded-3xl border border-wedding-gold/15 glass-card relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-[400px] h-[200px] bg-gradient-to-l from-wedding-gold/5 via-transparent to-transparent pointer-events-none" />
-          
-          <div className="space-y-2">
+      <main className="max-w-7xl mx-auto px-6 pt-8 relative z-10 space-y-8">
+
+        {/* Hero Banner */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-gradient-to-r from-wedding-crimson-dark/50 via-[#200407]/60 to-transparent p-7 rounded-3xl border border-wedding-gold/15 glass-card relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-[400px] h-[200px] bg-gradient-to-l from-wedding-gold/5 to-transparent pointer-events-none" />
+          <div className="space-y-2 relative z-10">
             <span className="text-xs font-bold text-wedding-gold uppercase tracking-widest flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 animate-pulse" /> Active Strategy Center
+              <Sparkles className="w-3.5 h-3.5 animate-pulse" /> Procurement Intelligence Platform
             </span>
-            <h1 className="font-cinzel text-3xl md:text-4xl font-extrabold text-white">
-              Bargain Room of <span className="text-gold-gradient">{user?.name || user?.email?.split('@')[0]}'s Shaadi</span>
+            <h1 className="font-cinzel text-2xl md:text-3xl font-extrabold text-white">
+              Welcome back,{' '}
+              <span className="text-gold-gradient">{user?.name || user?.email?.split('@')[0]}</span>
             </h1>
             <p className="text-gray-400 text-sm font-light">
-              Audit venue costs, squeeze caterers, check relative drama scores, and view high-leverage bargaining templates.
+              {projects.length > 0
+                ? `You have ${projects.length} active procurement plan${projects.length !== 1 ? 's' : ''}. AI has identified ₹${(totalSavings / 100000).toFixed(1)}L in potential savings.`
+                : 'Start your first AI procurement analysis to discover vendors, compare pricing, and optimize your wedding budget.'}
             </p>
           </div>
-
           <Link
             href="/dashboard/analyze"
-            className="self-start md:self-center relative group overflow-hidden bg-gradient-to-r from-wedding-gold to-wedding-gold-bright text-black font-bold px-6 py-3.5 rounded-full shadow-lg hover:shadow-wedding-gold/25 hover:scale-[1.02] transition-all flex items-center gap-2"
+            className="self-start md:self-center relative group overflow-hidden bg-gradient-to-r from-wedding-gold to-wedding-gold-bright text-black font-bold px-6 py-3.5 rounded-full shadow-lg hover:shadow-wedding-gold/30 hover:scale-[1.02] transition-all flex items-center gap-2 whitespace-nowrap"
           >
-            <Plus className="w-4.5 h-4.5 stroke-[3px]" />
-            <span>Create New Analysis</span>
+            <Plus className="w-4 h-4 stroke-[3px]" /> New Procurement Analysis
           </Link>
         </div>
 
-        {/* Dynamic Analytics Layout */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          
-          <div className="glass-card rounded-2xl border border-wedding-gold/15 p-6 relative overflow-hidden">
-            <span className="block text-xs font-bold text-gray-400 uppercase tracking-widest">Active Budgets</span>
-            <div className="flex items-baseline gap-2 mt-2">
-              <span className="font-cinzel text-2xl md:text-3xl font-black text-white">₹{(totalBudget / 100000).toFixed(1)}L</span>
-              <span className="text-xs text-wedding-gold">Planned</span>
-            </div>
-            <div className="flex items-center gap-1 text-[11px] text-gray-400 mt-4">
-              <Wallet className="w-3.5 h-3.5 text-wedding-gold" />
-              <span>Across {projects.length} wedding project(s)</span>
-            </div>
-          </div>
-
-          <div className="glass-card rounded-2xl border border-wedding-gold/15 p-6 relative overflow-hidden">
-            <span className="block text-xs font-bold text-gray-400 uppercase tracking-widest">Optimized Savings</span>
-            <div className="flex items-baseline gap-2 mt-2">
-              <span className="font-cinzel text-2xl md:text-3xl font-black text-emerald-400">₹{(totalSavings / 100000).toFixed(1)}L</span>
-              <span className="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full font-bold">~22% Off</span>
-            </div>
-            <div className="flex items-center gap-1 text-[11px] text-emerald-400/80 mt-4">
-              <TrendingDown className="w-3.5 h-3.5" />
-              <span>Squeezed out of bloated vendor rates</span>
-            </div>
-          </div>
-
-          <div className="glass-card rounded-2xl border border-wedding-gold/15 p-6 relative overflow-hidden">
-            <span className="block text-xs font-bold text-gray-400 uppercase tracking-widest">Avg Wedding Chaos Risk</span>
-            <div className="flex items-baseline gap-2 mt-2">
-              <span className="font-cinzel text-2xl md:text-3xl font-black text-orange-400">{avgRisk}%</span>
-              <span className="text-[10px] text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded-full font-bold">Uncles Alert</span>
-            </div>
-            <div className="flex items-center gap-1 text-[11px] text-orange-400/80 mt-4">
-              <Flame className="w-3.5 h-3.5 animate-bounce" />
-              <span>Mama & Phupha drama threshold</span>
-            </div>
-          </div>
-
-          <div className="glass-card rounded-2xl border border-wedding-gold/15 p-6 relative overflow-hidden">
-            <span className="block text-xs font-bold text-gray-400 uppercase tracking-widest">Negotation Status</span>
-            <div className="flex items-baseline gap-2 mt-2">
-              <span className="font-cinzel text-2xl md:text-3xl font-black text-wedding-gold-light">Active</span>
-              <span className="text-[10px] bg-wedding-gold/10 text-wedding-gold border border-wedding-gold/20 px-2 py-0.5 rounded-full">Secure</span>
-            </div>
-            <div className="flex items-center gap-1 text-[11px] text-gray-400 mt-4">
-              <Activity className="w-3.5 h-3.5 text-wedding-gold" />
-              <span>Psychological leverage enabled</span>
-            </div>
-          </div>
-
+        {/* Stats Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            {
+              label: 'Vendors Analyzed',
+              value: totalVendors,
+              suffix: '',
+              sub: `Across ${projects.length} project${projects.length !== 1 ? 's' : ''}`,
+              icon: <BarChart3 className="w-4 h-4 text-wedding-gold" />,
+              color: 'text-white',
+            },
+            {
+              label: 'Potential Savings',
+              value: Math.round(totalSavings / 1000),
+              prefix: '₹',
+              suffix: 'k',
+              sub: 'AI-identified opportunities',
+              icon: <TrendingDown className="w-4 h-4 text-emerald-400" />,
+              color: 'text-emerald-400',
+            },
+            {
+              label: 'Avg Procurement Score',
+              value: avgScore || 0,
+              suffix: '/100',
+              sub: projects.length > 0 ? 'Optimization rating' : 'No analyses yet',
+              icon: <Target className="w-4 h-4 text-wedding-gold" />,
+              color: 'text-wedding-gold',
+            },
+            {
+              label: 'Negotiation Status',
+              value: null,
+              label2: projects.length > 0 ? 'Active' : 'Ready',
+              sub: 'AI scripts available',
+              icon: <Activity className="w-4 h-4 text-wedding-gold" />,
+              color: 'text-wedding-gold-light',
+            },
+          ].map((stat, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.07 }}
+              className="glass-card rounded-2xl border border-wedding-gold/15 p-5 relative overflow-hidden"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{stat.label}</span>
+                {stat.icon}
+              </div>
+              <div className={`font-cinzel text-2xl font-black ${stat.color}`}>
+                {stat.value !== null ? `${stat.prefix || ''}${stat.value.toLocaleString('en-IN')}${stat.suffix || ''}` : stat.label2}
+              </div>
+              <p className="text-[10px] text-gray-500 mt-1.5">{stat.sub}</p>
+            </motion.div>
+          ))}
         </div>
 
-        {/* Two-Column Grid: Left (Saved Analyses) & Right (Quick Action Tools) */}
+        {/* Projects + Sidebar */}
         <div className="grid md:grid-cols-3 gap-8">
-          
-          {/* Left: Saved Wedding Projects & Analyses (Col span 2) */}
-          <div className="md:col-span-2 space-y-6">
+
+          {/* Left: Projects list */}
+          <div className="md:col-span-2 space-y-5">
             <div className="flex items-center justify-between">
-              <h2 className="font-cinzel text-xl md:text-2xl font-bold text-white flex items-center gap-2">
-                <FileText className="w-5 h-5 text-wedding-gold" /> Recent AI Wedding Reports
+              <h2 className="font-cinzel text-xl font-bold text-white flex items-center gap-2">
+                <FileText className="w-5 h-5 text-wedding-gold" /> Procurement Reports
               </h2>
-              <span className="text-xs text-gray-400 font-bold">{projects.length} Reports Found</span>
+              <span className="text-xs text-gray-400 font-bold">{projects.length} Analysis{projects.length !== 1 ? 'es' : ''}</span>
             </div>
 
             {projects.length === 0 ? (
-              <div className="glass-card rounded-3xl border border-dashed border-wedding-gold/20 p-12 text-center space-y-4">
-                <FileText className="w-12 h-12 text-wedding-gold/40 mx-auto animate-pulse" />
-                <h3 className="font-cinzel text-lg font-bold text-white">No Wedding Reports Yet</h3>
-                <p className="text-gray-400 text-sm max-w-sm mx-auto">
-                  You haven't run any AI budget audits. Fill out the cinematic wedding questionnaire to audit quotes, detect overpricing, and get your strategy!
-                </p>
+              <div className="glass-card rounded-3xl border border-dashed border-wedding-gold/20 p-12 text-center space-y-5">
+                <div className="w-16 h-16 rounded-2xl bg-wedding-gold/10 border border-wedding-gold/20 flex items-center justify-center mx-auto">
+                  <Brain className="w-8 h-8 text-wedding-gold/60 animate-pulse" />
+                </div>
+                <div>
+                  <h3 className="font-cinzel text-lg font-bold text-white mb-2">No Analyses Yet</h3>
+                  <p className="text-gray-400 text-sm max-w-sm mx-auto leading-relaxed">
+                    Run your first AI procurement analysis to discover vendors, detect overpricing, and build your wedding strategy.
+                  </p>
+                </div>
                 <Link
                   href="/dashboard/analyze"
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-wedding-crimson to-wedding-crimson-light text-white text-xs font-bold px-6 py-3 rounded-full border border-wedding-gold/20 hover:scale-102 transition-all mt-4"
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-wedding-gold to-wedding-gold-bright text-black font-bold text-xs uppercase px-6 py-3 rounded-full hover:scale-[1.02] transition-all shadow-lg shadow-wedding-gold/20"
                 >
-                  Start Budget Audit <ArrowRight className="w-4 h-4" />
+                  <Sparkles className="w-4 h-4" /> Start AI Procurement
                 </Link>
               </div>
             ) : (
               <div className="space-y-4">
-                {projects.map((project) => {
-                  const suggestionsCount = project.ai_analysis?.savingsSuggestions?.length || 0;
-                  const savings = project.ai_analysis?.savingsSuggestions?.reduce((sum: number, s: any) => sum + s.amount, 0) || 0;
-                  const riskScore = project.ai_analysis?.riskScore || 50;
+                {projects.map((project, i) => {
+                  const ps = project.ai_analysis?.procurementSummary || {};
+                  const savings = ps.estimatedSavingsOpportunity || project.ai_analysis?.savingsSuggestions?.reduce((s: number, x: any) => s + x.amount, 0) || 0;
+                  const score = ps.procurementScore || 75;
+                  const riskLevel = ps.riskLevel || (project.ai_analysis?.riskScore > 60 ? 'High' : project.ai_analysis?.riskScore > 35 ? 'Medium' : 'Low');
+                  const vendorsCount = ps.totalVendorsAnalyzed || project.ai_analysis?.recommendedVendors?.length || 0;
 
                   return (
-                    <div 
+                    <motion.div
                       key={project.id}
-                      className="glass-card glass-card-hover rounded-2xl border border-wedding-gold/15 p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 relative group"
+                      initial={{ opacity: 0, x: -15 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.06 }}
+                      className="glass-card glass-card-hover rounded-2xl border border-wedding-gold/15 p-5 flex flex-col md:flex-row md:items-center justify-between gap-5 group"
                     >
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-3">
-                          <span className="text-xs uppercase font-extrabold tracking-wider bg-wedding-crimson/50 border border-wedding-gold/20 text-wedding-gold px-2.5 py-0.5 rounded-full">
-                            {project.wedding_type || 'Royal Indian'}
+                      {/* Left: Meta */}
+                      <div className="space-y-2.5 flex-1">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="text-[10px] font-extrabold tracking-wider bg-wedding-crimson/40 border border-wedding-gold/20 text-wedding-gold px-2.5 py-0.5 rounded-full uppercase">
+                            {project.wedding_type?.split(' ').slice(0, 2).join(' ') || 'Wedding'}
                           </span>
-                          <span className="text-[11px] text-gray-400 flex items-center gap-1">
-                            <MapPin className="w-3 h-3 text-wedding-gold" /> {project.city || 'Delhi/NCR'}
+                          <span className="text-[10px] text-gray-400 flex items-center gap-1">
+                            <MapPin className="w-3 h-3 text-wedding-gold" /> {project.city}
                           </span>
+                          <RiskBadge level={riskLevel} />
                         </div>
 
-                        <h3 className="font-cinzel text-lg font-extrabold text-white">
-                          Wedding Budget: ₹{(project.budget || 1500000).toLocaleString('en-IN')}
+                        <h3 className="font-cinzel text-base font-extrabold text-white">
+                          ₹{(project.budget || 0).toLocaleString('en-IN')} Budget
                         </h3>
 
                         <div className="flex items-center gap-4 text-xs text-gray-400">
-                          <span className="flex items-center gap-1"><Users className="w-3.5 h-3.5 text-wedding-gold" /> {project.guests || 300} Guests</span>
-                          <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5 text-wedding-gold" /> {new Date(project.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                          <span className="flex items-center gap-1">
+                            <Users className="w-3 h-3 text-wedding-gold" /> {project.guests} guests
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Calendar className="w-3 h-3 text-wedding-gold" />
+                            {new Date(project.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <BarChart3 className="w-3 h-3 text-wedding-gold" /> {vendorsCount} vendors
+                          </span>
                         </div>
                       </div>
 
-                      <div className="flex md:flex-col items-center md:items-end justify-between md:justify-center border-t md:border-t-0 md:border-l border-white/5 pt-4 md:pt-0 md:pl-6 gap-3">
-                        <div className="text-left md:text-right">
-                          <span className="block text-[10px] text-gray-400 uppercase tracking-widest font-bold">Predicted Savings</span>
-                          <span className="block text-sm font-bold text-emerald-400">₹{savings.toLocaleString('en-IN')}</span>
+                      {/* Right: Metrics + Actions */}
+                      <div className="flex md:flex-col items-center md:items-end justify-between md:justify-center border-t md:border-t-0 md:border-l border-white/5 pt-4 md:pt-0 md:pl-5 gap-3 shrink-0">
+                        <div className="flex items-center gap-4 md:flex-col md:items-end md:gap-2">
+                          <div className="text-left md:text-right">
+                            <span className="block text-[9px] text-gray-500 uppercase tracking-widest font-bold">Savings</span>
+                            <span className="text-sm font-bold text-emerald-400">₹{savings.toLocaleString('en-IN')}</span>
+                          </div>
+                          <div className="text-left md:text-right">
+                            <span className="block text-[9px] text-gray-500 uppercase tracking-widest font-bold">Score</span>
+                            <span className="text-sm font-bold text-wedding-gold">{score}/100</span>
+                          </div>
                         </div>
 
-                        <div className="text-left md:text-right">
-                          <span className="block text-[10px] text-gray-400 uppercase tracking-widest font-bold">Drama Risk</span>
-                          <span className="text-xs font-bold text-orange-400">{riskScore}% Risk</span>
-                        </div>
-
-                        <div className="flex items-center gap-2 mt-1 shrink-0">
+                        <div className="flex items-center gap-2">
                           <button
-                            onClick={() => handleDeleteProject(project.id)}
-                            className="bg-wedding-crimson/10 hover:bg-wedding-crimson/30 text-wedding-crimson-light border border-wedding-crimson/25 p-2.5 rounded-xl transition-all"
-                            title="Delete Negotiation Plan"
+                            onClick={() => handleDelete(project.id)}
+                            className="bg-wedding-crimson/10 hover:bg-wedding-crimson/25 text-wedding-crimson-light border border-wedding-crimson/20 p-2 rounded-xl transition-all"
+                            title="Delete Analysis"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
-                          
                           <button
-                            onClick={() => handleOpenUpdateModal(project)}
-                            className="bg-[#2D050B]/30 hover:bg-[#2D050B]/60 text-wedding-gold-light border border-wedding-gold/20 p-2.5 rounded-xl transition-all"
-                            title="Edit parameters & recalculate strategy"
+                            onClick={() => handleOpenEdit(project)}
+                            className="bg-white/5 hover:bg-white/10 text-wedding-gold-light border border-wedding-gold/15 p-2 rounded-xl transition-all"
+                            title="Edit & Re-analyze"
                           >
                             <Edit2 className="w-3.5 h-3.5" />
                           </button>
-
-                          <Link 
+                          <Link
                             href={`/dashboard/analysis/${project.id}`}
-                            className="bg-wedding-gold text-black font-bold text-xs uppercase px-4 py-2.5 rounded-xl hover:bg-wedding-gold-bright transition-colors flex items-center gap-1 shadow-md shadow-wedding-gold/10"
+                            className="bg-gradient-to-r from-wedding-gold to-wedding-gold-bright text-black font-bold text-[10px] uppercase px-4 py-2.5 rounded-xl hover:scale-[1.02] transition-all flex items-center gap-1 shadow-md shadow-wedding-gold/15"
                           >
-                            View Strategy <ArrowRight className="w-3.5 h-3.5" />
+                            View Report <ArrowRight className="w-3 h-3" />
                           </Link>
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   );
                 })}
               </div>
             )}
           </div>
 
-          {/* Right: Quick Action Tools / Sarcastic Indian Wedding Advice (Col span 1) */}
-          <div className="space-y-6">
-            <h2 className="font-cinzel text-xl md:text-2xl font-bold text-white flex items-center gap-2">
-              <MessageSquare className="w-5 h-5 text-wedding-gold" /> Quick Strategist Tools
+          {/* Right Sidebar */}
+          <div className="space-y-5">
+            <h2 className="font-cinzel text-xl font-bold text-white flex items-center gap-2">
+              <Zap className="w-5 h-5 text-wedding-gold" /> Quick Tools
             </h2>
 
-            {/* Micro negotiation card */}
-            <div className="glass-card rounded-2xl border border-wedding-gold/15 p-6 space-y-4">
-              <div className="w-8 h-8 rounded-lg bg-wedding-crimson/30 border border-wedding-gold/20 flex items-center justify-center">
-                <Flame className="w-4 h-4 text-wedding-gold" />
+            {/* Negotiation Script Generator */}
+            <div className="glass-card rounded-2xl border border-wedding-gold/15 p-5 space-y-3">
+              <div className="w-9 h-9 rounded-xl bg-wedding-crimson/20 border border-wedding-gold/15 flex items-center justify-center">
+                <MessageSquare className="w-4 h-4 text-wedding-gold" />
               </div>
-              <h3 className="font-cinzel text-base font-bold text-white">Guilt Text Generator</h3>
-              <p className="text-gray-400 text-xs leading-relaxed">
-                Generate highly emotional copy-paste-ready bargaining messages on the fly. Squeeze caterers, DJs, and photographers.
+              <h3 className="font-cinzel text-sm font-bold text-white">Negotiation Script Generator</h3>
+              <p className="text-xs text-gray-400 leading-relaxed">
+                Generate emotional, copy-paste-ready bargaining messages for caterers, decorators, and photographers.
               </p>
               <Link
                 href="/dashboard/bargaining"
-                className="w-full bg-wedding-crimson/30 hover:bg-wedding-crimson/50 text-wedding-gold-light border border-wedding-gold/20 py-2.5 rounded-xl text-xs font-bold transition-all block text-center uppercase tracking-wider mt-2"
+                className="w-full block text-center bg-wedding-crimson/20 hover:bg-wedding-crimson/40 text-wedding-gold-light border border-wedding-gold/20 py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all"
               >
-                Launch Text Generator
+                Open Script Generator
               </Link>
             </div>
 
-            {/* Indian Wedding Intelligence Tidbit */}
-            <div className="glass-card rounded-2xl border border-wedding-gold/15 p-6 space-y-3 relative overflow-hidden bg-[#2D050B]/30">
-              <div className="absolute top-0 right-0 w-20 h-20 bg-wedding-gold/5 rounded-full blur-xl pointer-events-none" />
-              
+            {/* Intelligence Card */}
+            <div className="glass-card rounded-2xl border border-wedding-gold/15 p-5 space-y-3 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-wedding-gold/5 rounded-full blur-xl" />
               <div className="flex items-center gap-2 text-wedding-gold text-xs font-bold uppercase tracking-widest">
-                <BadgeAlert className="w-4 h-4" /> Baba's Golden Rules
+                <Brain className="w-4 h-4" /> AI Tip
               </div>
               <p className="text-xs text-gray-300 italic leading-relaxed">
-                "Rule #1: Never count plate markers yourself. Hire a teenage cousin who wants a new smartphone, tell him you will give a ₹2,000 bonus if he catches the caterer stealing markers. High ROI."
+                "The best time to negotiate with caterers is a weekday afternoon, 3–4 months before your wedding date. They're far more flexible when their calendar isn't full."
               </p>
-              <p className="text-xs text-gray-300 italic leading-relaxed pt-2 border-t border-white/5">
-                "Rule #2: The 'Mama ji' sofa is critical. If your uncle looks slightly grumpy, hand him a VIP cold drink and tell him the groom's side is absolutely terrified of his high taste. The crisis is avoided."
-              </p>
+              <div className="border-t border-white/5 pt-3">
+                <p className="text-xs text-gray-300 italic leading-relaxed">
+                  "Always ask for a 'bulk booking discount' even if you're only booking one service — it signals you're comparing multiple vendors."
+                </p>
+              </div>
             </div>
 
-            {/* Quick Demo indicator */}
+            {/* Mock mode indicator */}
             {isUsingMock && (
-              <div className="bg-[#AA7C11]/10 border border-[#D4AF37]/20 p-4 rounded-xl text-xs text-gray-300 leading-relaxed">
-                <strong>Platform Info:</strong> All analyzed wedding data are stored locally on your device's <code>localStorage</code>. Feel free to create multiple scenarios with different budgets to check how BargainBaba's algorithms react!
+              <div className="bg-amber-500/8 border border-amber-500/20 p-4 rounded-xl text-xs text-gray-400 leading-relaxed">
+                <strong className="text-amber-400">Demo Mode Active:</strong> Data is stored in localStorage. Connect Supabase to enable persistent cloud storage and multi-device access.
               </div>
             )}
           </div>
-
         </div>
-
       </main>
 
-      {/* 🚀 PREMIUM PARAMETERS EDIT / UPDATE MODAL */}
+      {/* ─── EDIT MODAL ──────────────────────────────────────────────────── */}
       <AnimatePresence>
         {isUpdateModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0F0204]/90 backdrop-blur-md">
-            
-            {/* If regenerating/updating AI strategy, display a gorgeous custom full screen loader overlay */}
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#080102]/90 backdrop-blur-md">
             {updating && (
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="absolute inset-0 bg-[#0F0204]/95 z-50 flex flex-col items-center justify-center p-6 text-center"
+              <motion.div
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                className="absolute inset-0 bg-[#080102]/95 z-50 flex flex-col items-center justify-center gap-6 text-center"
               >
-                <div className="relative w-36 h-36 mb-8 flex items-center justify-center">
-                  <div className="absolute inset-0 rounded-full border-2 border-wedding-gold/10 animate-ping opacity-30" />
-                  <div className="absolute inset-2 rounded-full border-4 border-double border-wedding-crimson animate-pulse opacity-40" />
-                  <div className="absolute inset-6 rounded-full border border-dashed border-wedding-gold animate-spin" style={{ animationDuration: '8s' }} />
-                  <div className="absolute inset-10 rounded-full bg-gradient-to-tr from-wedding-crimson to-[#FF8A00] flex items-center justify-center shadow-2xl glow-gold">
-                    <Sparkles className="w-8 h-8 text-white animate-bounce" />
+                <div className="relative w-24 h-24 flex items-center justify-center">
+                  <div className="absolute inset-0 rounded-full border border-wedding-gold/20 animate-ping opacity-40" />
+                  <div className="absolute inset-3 rounded-full border border-dashed border-wedding-gold/50 animate-spin" style={{ animationDuration: '8s' }} />
+                  <div className="absolute inset-6 rounded-full bg-gradient-to-br from-wedding-gold to-wedding-crimson flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-white animate-bounce" />
                   </div>
                 </div>
-
-                <h3 className="font-cinzel text-lg md:text-xl font-black text-gold-gradient tracking-widest uppercase mb-4">
-                  Recalculating Squeeze Strategy...
-                </h3>
-
-                <div className="min-h-[50px] max-w-sm">
+                <div>
+                  <h3 className="font-cinzel text-lg font-black text-gold-gradient mb-3">Re-analyzing...</h3>
                   <AnimatePresence mode="wait">
                     <motion.p
                       key={updatingTextIndex}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.4 }}
-                      className="text-xs md:text-sm italic text-wedding-gold-light"
+                      initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
+                      className="text-sm italic text-wedding-gold-light"
                     >
-                      "{updatingTexts[updatingTextIndex]}"
+                      {updatingTexts[updatingTextIndex]}
                     </motion.p>
                   </AnimatePresence>
                 </div>
               </motion.div>
             )}
 
-            {/* Modal Card */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ duration: 0.4 }}
-              className="glass-card border border-wedding-gold/25 max-w-xl w-full p-8 rounded-3xl relative overflow-hidden shadow-2xl max-h-[90vh] overflow-y-auto"
+              className="glass-card border border-wedding-gold/25 max-w-lg w-full p-8 rounded-3xl relative overflow-hidden shadow-2xl max-h-[90vh] overflow-y-auto"
             >
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-wedding-crimson via-wedding-gold to-wedding-crimson-light" />
-              
-              {/* Close Button */}
-              <button 
-                onClick={() => {
-                  setIsUpdateModalOpen(false);
-                  setEditingProject(null);
-                }}
-                className="absolute top-6 right-6 p-2 rounded-full border border-white/5 bg-white/5 hover:bg-white/10 transition-colors text-gray-400 hover:text-white"
+              <button
+                onClick={() => { setIsUpdateModalOpen(false); setEditingProject(null); }}
+                className="absolute top-5 right-5 p-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
 
               <div className="text-center mb-6">
-                <span className="text-xs uppercase font-extrabold tracking-widest text-wedding-gold block mb-1">Adjust Parameters</span>
-                <h2 className="font-cinzel text-xl font-bold text-white">Edit Wedding Details</h2>
-                <p className="text-xs text-gray-400 mt-1">Baba will re-evaluate market quotes and rebuild your negotiation plan.</p>
+                <span className="text-[10px] uppercase font-extrabold tracking-widest text-wedding-gold block mb-1">Re-Analyze</span>
+                <h2 className="font-cinzel text-xl font-bold text-white">Update Wedding Parameters</h2>
+                <p className="text-xs text-gray-400 mt-1">AI will re-run the full procurement analysis with updated data.</p>
               </div>
 
-              <form onSubmit={handleUpdateProject} className="space-y-4">
+              <form onSubmit={handleUpdate} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-wedding-gold-light uppercase tracking-wider block">Total Budget (₹)</label>
-                    <input
-                      type="number"
-                      required
-                      value={editBudget}
-                      onChange={(e) => setEditBudget(e.target.value)}
-                      className="w-full bg-wedding-burgundy/60 border border-wedding-gold/20 rounded-xl py-3 px-4 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-wedding-gold transition-all"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-wedding-gold-light uppercase tracking-wider block">Guests (Heads)</label>
-                    <input
-                      type="number"
-                      required
-                      value={editGuests}
-                      onChange={(e) => setEditGuests(e.target.value)}
-                      className="w-full bg-wedding-burgundy/60 border border-wedding-gold/20 rounded-xl py-3 px-4 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-wedding-gold transition-all"
-                    />
-                  </div>
+                  {[
+                    { label: 'Budget (₹)', value: editBudget, set: setEditBudget, type: 'number' },
+                    { label: 'Guest Count', value: editGuests, set: setEditGuests, type: 'number' },
+                  ].map(({ label, value, set, type }) => (
+                    <div key={label} className="space-y-1">
+                      <label className="text-[10px] font-bold text-wedding-gold-light uppercase tracking-wider block">{label}</label>
+                      <input
+                        type={type} required value={value}
+                        onChange={e => set(e.target.value)}
+                        className="w-full bg-wedding-burgundy/60 border border-wedding-gold/20 rounded-xl py-3 px-4 text-sm text-white focus:outline-none focus:border-wedding-gold transition-all"
+                      />
+                    </div>
+                  ))}
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-wedding-gold-light uppercase tracking-wider block">City</label>
+                {[
+                  { label: 'City', value: editCity, set: setEditCity, options: cities },
+                  { label: 'Wedding Style', value: editWeddingType, set: setEditWeddingType, options: weddingTypes },
+                  { label: 'Venue Category', value: editVenueType, set: setEditVenueType, options: venueTypes },
+                  { label: 'Catering Style', value: editCatering, set: setEditCatering, options: cateringPrefs },
+                ].map(({ label, value, set, options }) => (
+                  <div key={label} className="space-y-1">
+                    <label className="text-[10px] font-bold text-wedding-gold-light uppercase tracking-wider block">{label}</label>
                     <select
-                      value={editCity}
-                      onChange={(e) => setEditCity(e.target.value)}
-                      className="w-full bg-wedding-burgundy/60 border border-wedding-gold/20 rounded-xl py-3 px-4 text-xs text-white focus:outline-none focus:border-wedding-gold transition-all"
+                      value={value} onChange={e => set(e.target.value)}
+                      className="w-full bg-wedding-burgundy/60 border border-wedding-gold/20 rounded-xl py-3 px-4 text-sm text-white focus:outline-none focus:border-wedding-gold transition-all"
                     >
-                      {cities.map((c) => (
-                        <option key={c} value={c} className="bg-wedding-burgundy text-white">{c}</option>
-                      ))}
+                      {options.map(o => <option key={o} value={o} className="bg-[#2D050B] text-white">{o}</option>)}
                     </select>
                   </div>
+                ))}
 
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-wedding-gold-light uppercase tracking-wider block">Style / Type</label>
-                    <select
-                      value={editWeddingType}
-                      onChange={(e) => setEditWeddingType(e.target.value)}
-                      className="w-full bg-wedding-burgundy/60 border border-wedding-gold/20 rounded-xl py-3 px-4 text-xs text-white focus:outline-none focus:border-wedding-gold transition-all"
-                    >
-                      {weddingTypes.map((t) => (
-                        <option key={t} value={t} className="bg-wedding-burgundy text-white">{t}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-wedding-gold-light uppercase tracking-wider block">Venue Category</label>
-                  <select
-                    value={editVenueType}
-                    onChange={(e) => setEditVenueType(e.target.value)}
-                    className="w-full bg-wedding-burgundy/60 border border-wedding-gold/20 rounded-xl py-3 px-4 text-xs text-white focus:outline-none focus:border-wedding-gold transition-all"
-                  >
-                    {venueTypes.map((v) => (
-                      <option key={v} value={v} className="bg-wedding-burgundy text-white">{v}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-wedding-gold-light uppercase tracking-wider block">Catering Menu Style</label>
-                  <select
-                    value={editCatering}
-                    onChange={(e) => setEditCatering(e.target.value)}
-                    className="w-full bg-wedding-burgundy/60 border border-wedding-gold/20 rounded-xl py-3 px-4 text-xs text-white focus:outline-none focus:border-wedding-gold transition-all"
-                  >
-                    {cateringPrefs.map((c) => (
-                      <option key={c} value={c} className="bg-wedding-burgundy text-white">{c}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="flex gap-4 pt-4 border-t border-white/5 mt-6">
+                <div className="flex gap-3 pt-4 border-t border-white/5">
                   <button
                     type="button"
-                    onClick={() => {
-                      setIsUpdateModalOpen(false);
-                      setEditingProject(null);
-                    }}
-                    className="flex-1 py-3 px-6 rounded-xl border border-white/10 hover:bg-white/5 text-gray-300 font-bold text-xs uppercase tracking-wider transition-colors"
+                    onClick={() => { setIsUpdateModalOpen(false); setEditingProject(null); }}
+                    className="flex-1 py-3 rounded-xl border border-white/10 hover:bg-white/5 text-gray-300 font-bold text-xs uppercase tracking-wider transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 py-3 px-6 rounded-xl bg-gradient-to-r from-wedding-gold to-wedding-gold-bright hover:scale-[1.02] text-black font-bold text-xs uppercase tracking-wider transition-all shadow-md shadow-wedding-gold/15"
+                    className="flex-1 py-3 rounded-xl bg-gradient-to-r from-wedding-gold to-wedding-gold-bright text-black font-bold text-xs uppercase tracking-wider hover:scale-[1.01] transition-all shadow-md"
                   >
-                    Update & Squeeze
+                    Re-Analyze
                   </button>
                 </div>
               </form>
-
             </motion.div>
           </div>
         )}
       </AnimatePresence>
-
     </div>
   );
 }

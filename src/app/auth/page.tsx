@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/navigation';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { 
   Sparkles, 
@@ -120,12 +120,12 @@ function AuthPageContent() {
 
       {/* Back to Home button */}
       <div className="absolute top-6 left-6 z-20">
-        <button
-          onClick={() => router.push('/')}
+        <Link
+          href="/"
           className="flex items-center gap-2 text-sm font-medium text-wedding-gold-light hover:text-white transition-colors duration-200"
         >
           <ArrowLeft className="w-4 h-4" /> Back to Home
-        </button>
+        </Link>
       </div>
 
       <div className="w-full max-w-md relative z-10">
@@ -258,6 +258,15 @@ function AuthPageContent() {
               <span>Continue with Google</span>
             </button>
           </form>
+
+          {/* Trust indicators */}
+          <div className="flex items-center justify-center gap-4 mt-6 pt-4 border-t border-white/5">
+            {['256-bit Encrypted', 'No Card Required', 'GDPR Safe'].map(t => (
+              <span key={t} className="text-[10px] text-gray-500 flex items-center gap-1">
+                <ShieldCheck className="w-3 h-3 text-wedding-gold/50" /> {t}
+              </span>
+            ))}
+          </div>
 
           {/* Toggle form link */}
           <div className="text-center mt-8 pt-6 border-t border-white/5">

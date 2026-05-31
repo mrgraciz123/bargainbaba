@@ -140,11 +140,8 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="font-cinzel text-4xl sm:text-5xl md:text-7xl font-black leading-tight tracking-tight mb-6"
           >
-            Indian weddings are <br className="hidden md:inline"/>
-            <span className="text-gold-gradient font-black tracking-wide drop-shadow-md">not planned.</span> <br />
-            <span className="relative inline-block text-white mt-2">
-              They are <span className="underline decoration-wedding-crimson-light decoration-4 underline-offset-8">negotiated.</span>
-            </span>
+            Stop Overpaying <br className="hidden md:inline"/>
+            <span className="text-gold-gradient font-black tracking-wide drop-shadow-md">For Your Wedding.</span>
           </motion.h1>
 
           {/* Subheadline */}
@@ -154,7 +151,7 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.25 }}
             className="max-w-2xl mx-auto text-gray-300 text-base md:text-xl font-light leading-relaxed mb-12"
           >
-            Meet the AI agent that negotiates smarter than your smartest chacha. Save up to 25% on venue, catering, and decor using psychological leverage & local pricing intelligence.
+            BargainBaba AI discovers vendors, compares market pricing, detects overcharging, and helps families negotiate smarter.
           </motion.p>
 
           {/* Hero CTAs */}
@@ -168,7 +165,7 @@ export default function Home() {
               href={user ? "/dashboard/analyze" : "/auth"}
               className="w-full sm:w-auto relative group overflow-hidden bg-gradient-to-r from-wedding-gold via-wedding-gold-light to-wedding-gold-bright px-8 py-4 rounded-full text-base font-bold text-black shadow-xl hover:shadow-wedding-gold/45 hover:scale-[1.03] transition-all duration-300 flex items-center justify-center gap-2 border border-white/20 glow-gold"
             >
-              <span>Try BargainBaba AI</span>
+              <span>Start AI Procurement</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
 
@@ -177,7 +174,7 @@ export default function Home() {
               className="w-full sm:w-auto glass-card px-8 py-4 rounded-full text-base font-bold text-wedding-gold border border-wedding-gold/30 hover:bg-wedding-gold/10 hover:border-wedding-gold transition-all duration-300 flex items-center justify-center gap-2"
             >
               <Play className="w-4 h-4 fill-wedding-gold text-wedding-gold" />
-              <span>Watch AI Demo</span>
+              <span>View Demo</span>
             </button>
           </motion.div>
 
@@ -192,9 +189,9 @@ export default function Home() {
             
             <div className="flex items-center justify-between mb-4 border-b border-white/5 pb-3">
               <span className="text-xs uppercase font-bold tracking-widest text-wedding-gold flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" /> Live Negotiation Intelligence
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" /> Live Vendor Discovery
               </span>
-              <span className="text-xs text-gray-400 font-medium">BargainBaba in Action 🕵️‍♂️</span>
+              <span className="text-xs text-gray-400 font-medium">Sourcing Intelligence 🕵️‍♂️</span>
             </div>
 
             <div className="min-h-[140px] flex flex-col justify-between">
@@ -249,15 +246,15 @@ export default function Home() {
           </div>
           <div>
             <span className="block font-cinzel text-3xl md:text-5xl font-black text-gold-gradient glow-text-gold">8,400+</span>
-            <span className="block text-xs md:text-sm text-gray-400 uppercase tracking-widest mt-2 font-bold">Caterers Audited</span>
+            <span className="block text-xs md:text-sm text-gray-400 uppercase tracking-widest mt-2 font-bold">Vendors Analyzed</span>
           </div>
           <div>
-            <span className="block font-cinzel text-3xl md:text-5xl font-black text-gold-gradient glow-text-gold">98.2%</span>
-            <span className="block text-xs md:text-sm text-gray-400 uppercase tracking-widest mt-2 font-bold">Drama Avoidance</span>
+            <span className="block font-cinzel text-3xl md:text-5xl font-black text-gold-gradient glow-text-gold">91%</span>
+            <span className="block text-xs md:text-sm text-gray-400 uppercase tracking-widest mt-2 font-bold">Negotiation Success</span>
           </div>
           <div>
             <span className="block font-cinzel text-3xl md:text-5xl font-black text-gold-gradient glow-text-gold">4.9 ★</span>
-            <span className="block text-xs md:text-sm text-gray-400 uppercase tracking-widest mt-2 font-bold">Chacha Trust Score</span>
+            <span className="block text-xs md:text-sm text-gray-400 uppercase tracking-widest mt-2 font-bold">Trust Score</span>
           </div>
         </div>
       </section>
@@ -265,12 +262,12 @@ export default function Home() {
       {/* Futuristic AI Features Showcase */}
       <section className="px-6 py-24 max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16">
-          <span className="text-xs font-bold uppercase tracking-widest text-wedding-gold">Cunning Algorithms, Epic Savings</span>
+          <span className="text-xs font-bold uppercase tracking-widest text-wedding-gold">Intelligent Sourcing, Epic Savings</span>
           <h2 className="font-cinzel text-3xl md:text-5xl font-extrabold text-white mt-2">
-            The Secrets of <span className="text-gold-gradient">Baba's Negotiation</span>
+            The Bloomberg Terminal for <span className="text-gold-gradient">Weddings</span>
           </h2>
           <p className="max-w-xl mx-auto text-gray-400 text-sm md:text-base mt-4 font-light">
-            We combine high-level financial risk analytics with deep-rooted Indian cultural psychology. Here is what you get:
+            We use active AI web scraping and deep data modeling to architect the perfect wedding.
           </p>
         </div>
 
@@ -279,11 +276,11 @@ export default function Home() {
           <div className="glass-card glass-card-hover rounded-2xl p-8 border border-wedding-gold/15 flex flex-col justify-between group">
             <div>
               <div className="w-12 h-12 rounded-xl bg-wedding-crimson/20 border border-wedding-crimson/30 flex items-center justify-center text-wedding-gold mb-6 group-hover:scale-110 transition-transform">
-                <Percent className="w-6 h-6 text-wedding-gold" />
+                <Sparkles className="w-6 h-6 text-wedding-gold" />
               </div>
-              <h3 className="font-cinzel text-xl font-bold text-white mb-3">Vendor Overpricing Audits</h3>
+              <h3 className="font-cinzel text-xl font-bold text-white mb-3">Live Vendor Discovery</h3>
               <p className="text-gray-400 text-sm leading-relaxed mb-6">
-                Our AI cross-checks your venue, catering, and decor quotes against real-time wholesale rates in your specific city. We instantly flag standard markups and "NRI Tax".
+                Our AI continuously scrapes public directories, reviews, and pricing data to instantly find the highest-rated vendors matching your exact parameters.
               </p>
             </div>
             <span className="text-xs font-bold tracking-widest text-wedding-gold group-hover:translate-x-1.5 transition-transform flex items-center gap-1 mt-4">
@@ -295,11 +292,11 @@ export default function Home() {
           <div className="glass-card glass-card-hover rounded-2xl p-8 border border-wedding-gold/15 flex flex-col justify-between group">
             <div>
               <div className="w-12 h-12 rounded-xl bg-wedding-crimson/20 border border-wedding-crimson/30 flex items-center justify-center text-wedding-gold mb-6 group-hover:scale-110 transition-transform">
-                <MessageCircle className="w-6 h-6 text-wedding-gold" />
+                <Percent className="w-6 h-6 text-wedding-gold" />
               </div>
-              <h3 className="font-cinzel text-xl font-bold text-white mb-3">Guilt-Powered Hinglish Templates</h3>
+              <h3 className="font-cinzel text-xl font-bold text-white mb-3">Budget Allocation Engine</h3>
               <p className="text-gray-400 text-sm leading-relaxed mb-6">
-                Generate highly emotional copy-paste-ready bargaining messages for WhatsApp. Select guilt levels like the "Chacha Business Loss Card" or "Beti ki shadi" to melt vendors.
+                Enter your total budget, and our intelligent engine optimally divides it across venues, decor, catering, and photography based on real market averages.
               </p>
             </div>
             <span className="text-xs font-bold tracking-widest text-wedding-gold group-hover:translate-x-1.5 transition-transform flex items-center gap-1 mt-4">
@@ -311,11 +308,11 @@ export default function Home() {
           <div className="glass-card glass-card-hover rounded-2xl p-8 border border-wedding-gold/15 flex flex-col justify-between group">
             <div>
               <div className="w-12 h-12 rounded-xl bg-wedding-crimson/20 border border-wedding-crimson/30 flex items-center justify-center text-wedding-gold mb-6 group-hover:scale-110 transition-transform">
-                <AlertTriangle className="w-6 h-6 text-wedding-gold" />
+                <MessageCircle className="w-6 h-6 text-wedding-gold" />
               </div>
-              <h3 className="font-cinzel text-xl font-bold text-white mb-3">Relative Drama & Risk Scores</h3>
+              <h3 className="font-cinzel text-xl font-bold text-white mb-3">Targeted Negotiation Strategy</h3>
               <p className="text-gray-400 text-sm leading-relaxed mb-6">
-                Calculate the probability of key friction events: "Mama Ji stage sofa complaint probability", "Paneer shortage argument risk", and "DJ police conflict threshold".
+                Instead of blind bargaining, get personalized negotiation tactics explicitly designed for the live vendors the AI just discovered for you.
               </p>
             </div>
             <span className="text-xs font-bold tracking-widest text-wedding-gold group-hover:translate-x-1.5 transition-transform flex items-center gap-1 mt-4">
@@ -339,10 +336,10 @@ export default function Home() {
             <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-wedding-gold/5 via-wedding-gold/30 to-wedding-gold/5 -translate-y-1/2 hidden md:block z-0" />
             
             {[
-              { step: "01", title: "Feed the Details", desc: "Enter your budget, guest count, decoration preference, and current vendor quotes." },
-              { step: "02", title: "Run Baba AI Audit", desc: "Our neural net analyzes city-wide wholesale data and detects overcharging margins." },
-              { step: "03", title: "Deploy Emotional Leverage", desc: "Copy hyper-personalized, emotional bargaining messages and shoot them to vendors." },
-              { step: "04", title: "Squeeze Margins", desc: "Watch vendor quotes drop by 15-30% while maintaining absolute respect and royal class." }
+              { step: "01", title: "Set Your Budget", desc: "Tell the AI your total budget, city, guest count, and required vendor services." },
+              { step: "02", title: "Live Market Search", desc: "The AI instantly scours public vendor directories and pricing databases in your city." },
+              { step: "03", title: "Smart Sourcing", desc: "It filters out overpriced vendors and assembles the highest-rated dream team for your exact budget." },
+              { step: "04", title: "Lock Down Deals", desc: "Use the AI-generated negotiation strategies specifically tailored to the suggested vendors." }
             ].map((item, idx) => (
               <div key={idx} className="glass-card rounded-xl p-6 border border-wedding-gold/10 relative z-10 flex flex-col justify-between hover:border-wedding-gold/30 transition-colors">
                 <div>
@@ -419,11 +416,11 @@ export default function Home() {
         <div className="max-w-4xl mx-auto relative z-10">
           <Heart className="w-10 h-10 text-wedding-crimson-light animate-pulse mx-auto mb-6" />
           <h2 className="font-cinzel text-3xl md:text-5xl font-black text-white mb-6">
-            Don't Overpay the Vendors. <br className="hidden md:inline" />
-            <span className="text-gold-gradient">Let Baba Handle It.</span>
+            Find Your Dream Vendors. <br className="hidden md:inline" />
+            <span className="text-gold-gradient">Let AI Build Your Wedding.</span>
           </h2>
           <p className="max-w-lg mx-auto text-gray-300 text-sm md:text-base leading-relaxed mb-8">
-            Create an account, map your wedding details, and lock down your budgets before the caterers double the price next month. 
+            Create an account, set your budget, and let the AI source your perfect venue, photographer, and decorator before someone else books them. 
           </p>
 
           <Link

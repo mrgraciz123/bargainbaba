@@ -17,7 +17,7 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   title: "BargainBaba AI | India's First AI Wedding Negotiation & Budget Intelligence Platform",
   description: "Indian weddings are not planned. They are negotiated. Meet the AI agent that negotiates smarter than your smartest chacha. Get budget optimization, vendor overpricing detection, and emotional negotiation templates.",
-  keywords: ["wedding planning", "wedding negotiation", "indian wedding budget", "wedding cost calculator", "shaadi negotiation", "openrouter ai wedding planner"],
+  keywords: ["wedding planning", "wedding negotiation", "indian wedding budget", "wedding cost calculator", "shaadi negotiation", "gemini ai wedding planner"],
   openGraph: {
     title: "BargainBaba AI | Indian Wedding Budget Strategy",
     description: "Squeeze vendor margins, predict relative drama, and plan your Indian wedding budget like a billionaire. India's first AI-native wedding negotiator.",
