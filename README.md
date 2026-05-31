@@ -1,156 +1,303 @@
-BargainBaba AI 💍🤖
-“Indian weddings are not planned. They are negotiated.”
+# 🎩 BargainBaba – AI Wedding Architect
 
-BargainBaba AI is an AI-powered wedding negotiation and budget intelligence platform designed specifically for Indian weddings. The platform helps families optimize wedding expenses, detect vendor overpricing, generate smart negotiation strategies, and reduce unnecessary spending using AI-driven insights.
+<div align="center">
 
-Built during the Agentic Premier League (APL) Qualifiers 2026.
+### 💍 From Wedding Chaos to Wedding Intelligence
 
-🚨 Problem Statement
-PS-21 — AI Concierge for Lucknow’s Wedding & Event Industry
+An AI-powered wedding procurement and planning platform that helps families discover vendors, optimize budgets, generate wedding blueprints, and make smarter wedding decisions.
 
-Indian weddings are emotionally and financially chaotic. Families often:
+![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge)
+![TypeScript](https://img.shields.io/badge/TypeScript-Blue?style=for-the-badge)
+![Gemini](https://img.shields.io/badge/AI-Gemini-blue?style=for-the-badge)
+![Supabase](https://img.shields.io/badge/Database-Supabase-green?style=for-the-badge)
+![Google Places](https://img.shields.io/badge/API-Google%20Places-orange?style=for-the-badge)
+![Resend](https://img.shields.io/badge/Email-Resend-red?style=for-the-badge)
 
-exceed their wedding budgets,
-get overcharged by vendors,
-struggle with negotiation,
-and lack proper pricing transparency.
+</div>
 
-Most wedding planning workflows are still manual and heavily dependent on bargaining experience and local market knowledge.
+---
 
-💡 Solution
+## 🌟 The Problem
 
-BargainBaba AI acts like an intelligent Indian wedding strategist.
+Wedding planning is one of the most expensive and stressful experiences for families.
 
-Users enter:
+People often struggle with:
 
-wedding budget,
-guest count,
-city,
-wedding type,
-and vendor preferences.
+* ❌ Vendor overpricing
+* ❌ Lack of market transparency
+* ❌ Endless vendor research
+* ❌ Budget leakage
+* ❌ Difficulty comparing vendors
+* ❌ Generic planning advice
 
-The AI then generates:
+A single poor decision can significantly increase wedding expenses.
 
-budget health analysis,
-vendor overpricing detection,
-savings recommendations,
-emotional negotiation messages,
-wedding risk predictions,
-and humorous “relative drama” forecasts.
+---
 
-The platform combines:
+## 🚀 Our Solution
 
-AI-powered financial intelligence,
-cultural negotiation strategies,
-and wedding planning assistance
+**BargainBaba** acts as an AI Wedding Architect.
 
-into one unified AI experience.
+Users simply provide:
 
-✨ Features
-🔐 Authentication
-Email/password login
-Google OAuth login
-Persistent user sessions
-🤖 AI Wedding Analysis
+* 📍 Wedding City
+* 💰 Budget
+* 👥 Guest Count
+* 🪔 Religion & Community
+* 🎯 Priorities
 
-Generate:
+The platform then generates:
 
-Budget health score
-Wedding affordability insights
-Vendor overpricing analysis
-Wedding risk predictions
-Smart savings recommendations
-💬 Emotional Bargaining Generator
+✅ Procurement Intelligence
 
-AI-generated negotiation lines such as:
+✅ Real Vendor Discovery
 
-“Bhaiya catering bhi aapse hi lenge, thoda adjust kar dijiye 😭”
+✅ Budget Optimization
 
-“Sharma ji ko same package 20k cheaper mila tha…”
+✅ Wedding Themes
 
-🎭 Relative Drama Prediction
+✅ Market Intelligence
 
-Predicts:
+✅ Vendor Recommendations
 
-Mama ji complaint probability 😭
-Paneer shortage risk
-DJ conflict possibility
-Budget overflow chances
-💾 Wedding Dashboard
+✅ Cultural Blueprint
 
-Users can:
+✅ Personalized Wedding Deliverables
 
-save wedding analyses,
-revisit previous reports,
-and manage multiple wedding plans.
-🛠 Tech Stack
-Frontend
-Next.js
-Tailwind CSS
-Framer Motion
-Backend & Database
-Supabase
-Supabase Authentication
-Supabase Database
-Row Level Security (RLS)
-AI Integration
-OpenRouter API
-Gemma 2 9B Model
-Deployment
-Vercel
-🤖 AI Tools Used
+✅ Automated Procurement Reports
 
-As permitted under APL rules, the following AI tools were used during development:
+---
 
-Antigravity
-ChatGPT
-OpenRouter
+## 🧠 Key Features
 
-These tools assisted with:
+### 🤖 AI Wedding Architect
 
-UI generation
-backend integration
-debugging
-prompt engineering
-AI workflow orchestration
-🧠 Innovation
+Generates personalized wedding blueprints using AI-powered procurement intelligence.
 
-Unlike generic wedding planning platforms, BargainBaba AI focuses specifically on:
+### 📍 Real Vendor Discovery
 
-AI-powered negotiation intelligence,
-culturally contextual planning,
-emotional bargaining assistance,
-and financial optimization for Indian weddings.
+Discovers vendors using Google Places API and market data.
 
-The platform transforms traditional bargaining culture into an AI-assisted decision-making experience.
+### 💰 Budget Optimization
 
-📸 Demo Flow
-User signs in
-Enters wedding details
-AI analyzes the wedding plan
-Platform generates:
-savings suggestions,
-vendor analysis,
-negotiation messages,
-wedding risk predictions
-Results are saved to the user dashboard
-⚠ Known Limitations
-Vendor pricing is simulated for MVP purposes
-AI-generated outputs may occasionally vary
-Market pricing intelligence is currently region-limited
-🚀 Setup Instructions
-1. Clone Repository
-git clone https://github.com/your-username/bargainbaba-ai.git
-2. Install Dependencies
-npm install
-3. Configure Environment Variables
+Identifies savings opportunities and optimized budget allocations.
 
-Create a .env.local file:
+### 🎨 AI Wedding Themes
 
-NEXT_PUBLIC_SUPABASE_URL=YOUR_SUPABASE_URL
+Creates wedding concepts tailored to budget, culture, and preferences.
 
-NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_SUPABASE_KEY
+### 🪔 Cultural Blueprint
 
-OPENROUTER_API_KEY=YOUR_OPENROUTER_API_KEY
-4. Run Development Server
-npm run dev
+Provides religion-aware and community-aware recommendations.
+
+### 📊 Market Intelligence Dashboard
+
+Displays:
+
+* Average Market Cost
+* Minimum Cost
+* Vendor Insights
+* Procurement Metrics
+
+### ⚠️ Vendor Intelligence
+
+Evaluates vendors using ratings, reviews, and procurement relevance.
+
+### 📧 Automated Reports
+
+Delivers procurement summaries and wedding blueprints directly to users.
+
+---
+
+## 🏗 System Architecture
+
+```mermaid
+flowchart TD
+
+A[User] --> B[Next.js Frontend]
+
+B --> C[AI Procurement Engine]
+
+C --> D[Gemini AI]
+C --> E[Google Places API]
+C --> F[Supabase]
+C --> G[Resend]
+
+D --> H[Wedding Blueprint]
+E --> I[Vendor Discovery]
+
+H --> J[Procurement Report]
+I --> J
+
+J --> K[Email Delivery]
+```
+
+---
+
+## 🛠 Tech Stack
+
+### Frontend
+
+* Next.js 14
+* TypeScript
+* Tailwind CSS
+* Framer Motion
+
+### Backend
+
+* Node.js
+* Express.js
+
+### AI & Intelligence
+
+* Google Gemini
+
+### Database
+
+* Supabase
+
+### Authentication
+
+* Supabase Auth
+* Google OAuth
+
+### Vendor Discovery
+
+* Google Places API
+
+### Communication
+
+* Resend
+
+### Deployment
+
+* Vercel
+* Render
+
+---
+
+## 📈 Sample Procurement Insights
+
+| Metric              | Example Value |
+| ------------------- | ------------- |
+| Procurement Score   | 94/100        |
+| Vendors Analyzed    | 20+           |
+| Estimated Savings   | ₹4,96,200     |
+| Risk Level          | Medium        |
+| Budget Optimization | 85%           |
+
+---
+
+## 🔥 What Makes BargainBaba Different?
+
+| Traditional Wedding Planning | BargainBaba             |
+| ---------------------------- | ----------------------- |
+| Manual Research              | AI Powered              |
+| Vendor Guesswork             | Data Driven             |
+| Static Suggestions           | Dynamic Recommendations |
+| Budget Leakage               | Cost Optimization       |
+| Generic Planning             | Personalized Blueprints |
+
+---
+
+## 📸 Product Showcase
+
+### Dashboard
+
+*Add Screenshot*
+
+### Procurement Intelligence
+
+*Add Screenshot*
+
+### Vendor Discovery
+
+*Add Screenshot*
+
+### AI Wedding Themes
+
+*Add Screenshot*
+
+### Wedding Blueprint
+
+*Add Screenshot*
+
+---
+
+## 🎯 Impact
+
+### 👨‍👩‍👧 For Families
+
+* Save Time
+* Save Money
+* Reduce Stress
+* Better Vendor Decisions
+
+### 🏪 For Vendors
+
+* Increased Visibility
+* Better Discovery
+* Fair Competition
+
+### 🌍 For The Wedding Industry
+
+* Transparency
+* Digital Transformation
+* Intelligent Procurement
+
+---
+
+## 🔐 Security & Privacy
+
+* Secure Authentication with Supabase
+* OAuth-Based Access Control
+* Protected Environment Variables
+* Secure API Integrations
+
+---
+
+## 🔮 Future Roadmap
+
+### Phase 2
+
+* 🎙 AI Negotiation Assistant
+* 💬 WhatsApp Procurement Reports
+* 🤝 Vendor Marketplace
+* 📊 Wedding Expense Tracker
+
+### Phase 3
+
+* 🗣 Voice-Based Wedding Planning
+* 🌍 Multilingual Support
+* 📈 Predictive Budget Forecasting
+* 🎯 Hyper-Personalized Recommendations
+
+---
+
+## 🚀 Live Demo
+
+**Frontend:** [Add Vercel Link]
+
+**Backend:** [Add Render Link]
+
+---
+
+## 👨‍💻 Team
+
+### Bit Bandits
+
+Built with passion to transform wedding planning through AI, procurement intelligence, and data-driven decision making.
+
+**Lead:** Abhay Shanker Tiwari
+
+---
+
+<div align="center">
+
+# ⭐ BargainBaba
+
+### The World's First AI Wedding Architect
+
+### 💍 From Wedding Chaos → Wedding Intelligence
+
+</div>
