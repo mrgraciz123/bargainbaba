@@ -115,7 +115,7 @@ export default function VendorRecommendations({ vendors }: { vendors: any[] }) {
                 <span className="text-[10px] text-gray-500 uppercase tracking-wider block mb-0.5">Est. Cost</span>
                 {vendor.priceEstimate ? (
                   <span className="font-cinzel text-lg font-black" style={{ color: catColor }}>
-                    ₹{(vendor.priceEstimate).toLocaleString('en-IN')}
+                    ₹{Number(vendor.priceEstimate).toLocaleString('en-IN')}
                   </span>
                 ) : (
                   <span className="text-xs font-bold text-gray-500 italic">Market data unavailable</span>

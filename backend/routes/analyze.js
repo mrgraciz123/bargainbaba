@@ -16,6 +16,8 @@ function extractJsonString(str) {
 }
 
 router.post('/', async (req, res) => {
+  let globalFallbackVendors = [];
+  let globalMarketIntelligence = [];
   try {
     const {
       budget,
@@ -87,6 +89,10 @@ router.post('/', async (req, res) => {
     let fallbackVendorLists = [];
     let validVendorCount = 0;
     let marketIntelligenceData = [];
+
+    // Assign to globals for fallback use
+    globalFallbackVendors = fallbackVendorLists;
+    globalMarketIntelligence = marketIntelligenceData;
 
     for (const [category, vendors] of Object.entries(scrapeMapping)) {
       if (vendors && vendors.length > 0) {
@@ -512,13 +518,14 @@ Include scores for 'aiCompatibilityScore', 'trendAnalysis', 'guestExperienceScor
         negotiationSuccessProbability: 75,
         riskLevel: "Medium"
       },
-      recommendedVendors: [],
+      recommendedVendors: globalFallbackVendors.flatMap(list => list.vendors || []).slice(0, 15),
+      vendorPool: globalFallbackVendors.flatMap(list => list.vendors || []),
       budgetAllocation: [],
       negotiationIntelligence: [],
       vendorRiskIntelligence: [],
       marketInsights: [],
       pricingHeatmap: [],
-      marketIntelligenceData: []
+      marketIntelligenceData: globalMarketIntelligence
     });
   }
 });
